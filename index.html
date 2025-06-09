@@ -67,26 +67,30 @@
     <div id="menu"></div>
   </main>
   <script>
+    const lunes = [
+      { comida: 'Pre-entreno', plato: 'Avena con leche y plátano', ingredientes: 'Avena 40g, leche 150ml, plátano 80g', kcal: 320, prot: 12, grasas: 8, carbos: 45 },
+      { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 30g, nueces 15g, agua', kcal: 230, prot: 27, grasas: 10, carbos: 5 },
+      { comida: 'Comida', plato: 'Pollo con arroz y verduras', ingredientes: 'Pollo 150g, arroz 100g, verduras 100g, AOVE 5g', kcal: 650, prot: 45, grasas: 18, carbos: 50 },
+      { comida: 'Merienda', plato: 'Yogur natural y manzana', ingredientes: 'Yogur 125g, manzana 150g', kcal: 200, prot: 6, grasas: 4, carbos: 30 },
+      { comida: 'Cena', plato: 'Salmón con patata y calabacín', ingredientes: 'Salmón 150g, patata 150g, calabacín 150g, AOVE 5g', kcal: 600, prot: 40, grasas: 30, carbos: 25 },
+    ];
+
+    const martes = [
+      { comida: 'Pre-entreno', plato: 'Tostadas con aguacate y huevo', ingredientes: 'Pan integral 60g, aguacate 50g, huevo 60g', kcal: 330, prot: 15, grasas: 16, carbos: 30 },
+      { comida: 'Post-entreno', plato: 'Batido whey y plátano', ingredientes: 'Whey 30g, plátano 100g, agua', kcal: 250, prot: 27, grasas: 2, carbos: 20 },
+      { comida: 'Comida', plato: 'Garbanzos con atún y ensalada', ingredientes: 'Garbanzos 80g, atún 80g, verdura 100g, AOVE 5g', kcal: 500, prot: 35, grasas: 16, carbos: 30 },
+      { comida: 'Merienda', plato: 'Frutos secos y yogur', ingredientes: 'Almendras 20g, yogur 125g', kcal: 220, prot: 8, grasas: 15, carbos: 10 },
+      { comida: 'Cena', plato: 'Pechuga de pavo con arroz y espinacas', ingredientes: 'Pavo 150g, arroz 80g, espinacas 100g, AOVE 5g', kcal: 600, prot: 45, grasas: 18, carbos: 35 },
+    ];
+
     const menus = {
-      lunes: [
-        { comida: 'Pre-entreno', plato: 'Avena con leche y plátano', ingredientes: 'Avena 40g, leche 150ml, plátano 80g', kcal: 320, prot: 12, grasas: 8, carbos: 45 },
-        { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 30g, nueces 15g, agua', kcal: 230, prot: 27, grasas: 10, carbos: 5 },
-        { comida: 'Comida', plato: 'Pollo con arroz y verduras', ingredientes: 'Pollo 150g, arroz 100g, verduras 100g, AOVE 5g', kcal: 650, prot: 45, grasas: 18, carbos: 50 },
-        { comida: 'Merienda', plato: 'Yogur natural y manzana', ingredientes: 'Yogur 125g, manzana 150g', kcal: 200, prot: 6, grasas: 4, carbos: 30 },
-        { comida: 'Cena', plato: 'Salmón con patata y calabacín', ingredientes: 'Salmón 150g, patata 150g, calabacín 150g, AOVE 5g', kcal: 600, prot: 40, grasas: 30, carbos: 25 },
-      ],
-      martes: [
-        { comida: 'Pre-entreno', plato: 'Tostadas con aguacate y huevo', ingredientes: 'Pan integral 60g, aguacate 50g, huevo 60g', kcal: 330, prot: 15, grasas: 16, carbos: 30 },
-        { comida: 'Post-entreno', plato: 'Batido whey y plátano', ingredientes: 'Whey 30g, plátano 100g, agua', kcal: 250, prot: 27, grasas: 2, carbos: 20 },
-        { comida: 'Comida', plato: 'Garbanzos con atún y ensalada', ingredientes: 'Garbanzos 80g, atún 80g, verdura 100g, AOVE 5g', kcal: 500, prot: 35, grasas: 16, carbos: 30 },
-        { comida: 'Merienda', plato: 'Frutos secos y yogur', ingredientes: 'Almendras 20g, yogur 125g', kcal: 220, prot: 8, grasas: 15, carbos: 10 },
-        { comida: 'Cena', plato: 'Pechuga de pavo con arroz y espinacas', ingredientes: 'Pavo 150g, arroz 80g, espinacas 100g, AOVE 5g', kcal: 600, prot: 45, grasas: 18, carbos: 35 },
-      ],
-      miercoles: [...this.lunes],
-      jueves: [...this.martes],
-      viernes: [...this.lunes],
-      sabado: [...this.martes],
-      domingo: [...this.lunes]
+      lunes,
+      martes,
+      miercoles: [...lunes],
+      jueves: [...martes],
+      viernes: [...lunes],
+      sabado: [...martes],
+      domingo: [...lunes],
     };
 
     function renderMenu() {
