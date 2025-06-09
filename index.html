@@ -3,620 +3,214 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Menú Semanal - Plan Mixto 2700 kcal</title>
+<title>Menú Semanal de Nutrición</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0; padding: 0;
-    background: #f4f6f8;
-    color: #333;
-  }
-  header {
-    background: #0077cc;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-  }
-  main {
-    max-width: 600px;
-    margin: 1rem auto;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.1);
-    padding: 1rem 1.5rem;
-  }
-  nav {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-  nav button {
-    background: #0077cc;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  nav button:disabled {
-    background: #a0c4e6;
-    cursor: default;
-  }
-  h2 {
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
-  img.menu-img {
-    display: block;
-    margin: 0 auto 1rem;
-    max-width: 100%;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  }
-  section.meal {
-    border-bottom: 1px solid #ddd;
-    padding: 0.5rem 0;
-  }
-  section.meal:last-child {
-    border-bottom: none;
-  }
-  section.meal h3 {
-    margin: 0.3rem 0;
-    color: #0077cc;
-  }
-  .meal-info {
-    font-size: 0.9rem;
-    color: #555;
-  }
-  .summary {
-    background: #e3f2fd;
-    padding: 1rem;
-    border-radius: 6px;
-    margin-top: 1rem;
-  }
-  .summary h3 {
-    margin-top: 0;
-  }
-  .supplements {
-    background: #fff3e0;
-    padding: 1rem;
-    border-radius: 6px;
-    margin-top: 1rem;
-  }
-  .supplements ul {
-    margin: 0; padding-left: 1.2rem;
-  }
-  footer {
-    text-align: center;
-    padding: 1rem;
-    color: #888;
-    font-size: 0.9rem;
-  }
+  body { font-family: Arial, sans-serif; margin: 20px; max-width: 600px; }
+  h1, h2, h3 { color: #2c3e50; }
+  .meal { margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+  .meal-info { font-size: 0.9em; color: #555; }
+  #dayImage { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; }
+  button:disabled { opacity: 0.5; }
+  #daySelector { margin-bottom: 15px; padding: 6px; font-size: 1em; }
 </style>
 </head>
 <body>
-<header>
-  <h1>Menú Semanal - Plan Mixto 2700 kcal</h1>
-  <p>Entreno 9:30 - 10:30, desayuno ligero pre-entreno + comida post-entreno</p>
-</header>
-<main>
-  <nav>
-    <button id="prevDay">&lt; Día anterior</button>
-    <div id="dayName">Lunes</div>
-    <button id="nextDay">Día siguiente &gt;</button>
-  </nav>
 
-  <img id="dayImage" class="menu-img" src="" alt="Imagen del día" />
+<h1>Menú Semanal de Nutrición</h1>
 
-  <div id="mealsContainer"></div>
+<label for="daySelector">Selecciona un día:</label>
+<select id="daySelector" aria-label="Selector de día de la semana">
+  <option value="0">Lunes</option>
+  <option value="1">Martes</option>
+  <option value="2">Miércoles</option>
+  <option value="3">Jueves</option>
+  <option value="4">Viernes</option>
+  <option value="5">Sábado</option>
+  <option value="6">Domingo</option>
+</select>
 
-  <div class="summary" id="dailySummary"></div>
+<div>
+  <h2 id="dayName"></h2>
+  <img id="dayImage" src="" alt="" />
+</div>
 
-  <div class="supplements" id="supplements"></div>
-</main>
-<footer>
-  &copy; 2025 Tu Plan Nutricional
-</footer>
+<div id="mealsContainer"></div>
+
+<div id="dailySummary"></div>
+
+<div id="supplements"></div>
+
+<div style="margin-top:20px;">
+  <button id="prevDay">Día anterior</button>
+  <button id="nextDay">Día siguiente</button>
+</div>
 
 <script>
-  const days = [
-    "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"
-  ];
+  const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
-  // Imágenes genéricas para cada día (puedes sustituir URLs por otras imágenes que prefieras)
+  // URLs o rutas relativas a las imágenes (añadidas las faltantes)
   const dayImages = {
-    Lunes: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
-    Martes: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80",
-    Miércoles: "https://images.unsplash.com/photo-1510626176961-4b28268e4334?auto=format&fit=crop&w=600&q=80",
-    Jueves: "https://images.unsplash.com/photo-1523983305104-6d19ee19866a?auto=format&fit=crop&w=600&q=80",
-    Viernes: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=600&q=80",
-    Sábado: "https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?auto=format&fit=crop&w=600&q=80",
-    Domingo: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80"
+    Lunes: "https://i.imgur.com/AqkJOuN.jpg",      // ejemplo pollo
+    Martes: "https://i.imgur.com/AGHWTlX.jpg",     // ejemplo arroz
+    Miércoles: "https://i.imgur.com/Lb3csbZ.jpg",  // corregida imagen para miércoles
+    Jueves: "https://i.imgur.com/f70cTYj.jpg",     // corregida imagen para jueves
+    Viernes: "https://i.imgur.com/7IBmBDv.jpg",    // ejemplo lentejas
+    Sábado: "https://i.imgur.com/gFqnjyG.jpg",     // ejemplo garbanzos
+    Domingo: "https://i.imgur.com/um3uEoN.jpg"     // ejemplo salmón
   };
 
-  // Menú completo adaptado con desayuno ligero pre-entreno y post-entreno completo, 5 comidas/día
   const menu = {
     Lunes: {
       meals: [
-        {
-          name: "Desayuno (pre-entreno)",
-          dish: "Avena ligera + proteína whey + plátano pequeño",
-          grams: "40g avena + 20g whey + 100g plátano",
-          kcal: 370,
-          protein: 30,
-          carbs: 45,
-          fat: 4,
-        },
-        {
-          name: "Post-entreno",
-          dish: "Tortilla 3 huevos + arroz + pollo",
-          grams: "3 huevos + 150g arroz + 150g pollo",
-          kcal: 700,
-          protein: 65,
-          carbs: 70,
-          fat: 15,
-        },
-        {
-          name: "Comida",
-          dish: "Lentejas con verduras y sepia",
-          grams: "150g lentejas + 150g verduras + 150g sepia",
-          kcal: 600,
-          protein: 55,
-          carbs: 60,
-          fat: 8,
-        },
-        {
-          name: "Merienda",
-          dish: "Yogur griego + frutos secos + manzana",
-          grams: "200g yogur + 20g nueces + 150g manzana",
-          kcal: 350,
-          protein: 25,
-          carbs: 30,
-          fat: 15,
-        },
-        {
-          name: "Cena",
-          dish: "Salmón a la plancha con judías verdes y patata",
-          grams: "180g salmón + 150g judías verdes + 150g patata",
-          kcal: 650,
-          protein: 60,
-          carbs: 50,
-          fat: 20,
-        },
+        { name: "Desayuno (pre-entreno)", dish: "Avena ligera + proteína whey + plátano", grams: "40g avena + 20g whey + 150g plátano", kcal: 370, protein: 30, carbs: 45, fat: 4 },
+        { name: "Post-entreno", dish: "Tortilla 3 huevos + arroz + pavo", grams: "3 huevos + 150g arroz + 150g pavo", kcal: 700, protein: 65, carbs: 70, fat: 15 },
+        { name: "Comida", dish: "Lentejas con verduras y sepia", grams: "150g lentejas + 150g verduras + 150g sepia", kcal: 600, protein: 55, carbs: 60, fat: 8 },
+        { name: "Merienda", dish: "Yogur griego + frutos secos + manzana", grams: "200g yogur + 20g nueces + 150g manzana", kcal: 350, protein: 25, carbs: 30, fat: 15 },
+        { name: "Cena", dish: "Salmón a la plancha con brócoli y patata", grams: "180g salmón + 150g brócoli + 150g patata", kcal: 660, protein: 60, carbs: 50, fat: 20 }
       ],
-      summary: {
-        kcal: 2670,
-        protein: 235,
-        carbs: 255,
-        fat: 62,
-      },
+      summary: { kcal: 2680, protein: 234, carbs: 254, fat: 61 },
       supplements: [
         "Creatina 5g post-entreno",
         "30g proteína whey en desayuno",
-        "Aminoácidos durante entrenamiento",
-      ],
+        "Aminoácidos durante entrenamiento"
+      ]
     },
 
     Martes: {
       meals: [
-        {
-          name: "Desayuno (pre-entreno)",
-          dish: "Avena ligera + proteína whey + pera",
-          grams: "40g avena + 20g whey + 150g pera",
-          kcal: 360,
-          protein: 29,
-          carbs: 44,
-          fat: 3,
-        },
-        {
-          name: "Post-entreno",
-          dish: "Huevos revueltos + arroz + pavo",
-          grams: "3 huevos + 150g arroz + 150g pavo",
-          kcal: 710,
-          protein: 65,
-          carbs: 70,
-          fat: 15,
-        },
-        {
-          name: "Comida",
-          dish: "Garbanzos con verduras y sepia",
-          grams: "150g garbanzos + 150g verduras + 150g sepia",
-          kcal: 600,
-          protein: 55,
-          carbs: 60,
-          fat: 8,
-        },
-        {
-          name: "Merienda",
-          dish: "Yogur griego + frutos secos + naranja",
-          grams: "200g yogur + 20g nueces + 150g naranja",
-          kcal: 340,
-          protein: 25,
-          carbs: 30,
-          fat: 15,
-        },
-        {
-          name: "Cena",
-          dish: "Salmón a la plancha con brócoli y patata",
-          grams: "180g salmón + 150g brócoli + 150g patata",
-          kcal: 660,
-          protein: 60,
-          carbs: 50,
-          fat: 20,
-        },
+        { name: "Desayuno (pre-entreno)", dish: "Avena ligera + proteína whey + pera", grams: "40g avena + 20g whey + 150g pera", kcal: 360, protein: 29, carbs: 44, fat: 3 },
+        { name: "Post-entreno", dish: "Huevos revueltos + arroz + pollo", grams: "3 huevos + 150g arroz + 150g pollo", kcal: 710, protein: 65, carbs: 70, fat: 15 },
+        { name: "Comida", dish: "Garbanzos con verduras y sepia", grams: "150g garbanzos + 150g verduras + 150g sepia", kcal: 600, protein: 55, carbs: 60, fat: 8 },
+        { name: "Merienda", dish: "Yogur griego + frutos secos + naranja", grams: "200g yogur + 20g nueces + 150g naranja", kcal: 350, protein: 25, carbs: 30, fat: 15 },
+        { name: "Cena", dish: "Salmón a la plancha con judías verdes y patata", grams: "180g salmón + 150g judías verdes + 150g patata", kcal: 650, protein: 60, carbs: 50, fat: 20 }
       ],
-      summary: {
-        kcal: 2670,
-        protein: 234,
-        carbs: 254,
-        fat: 61,
-      },
+      summary: { kcal: 2670, protein: 234, carbs: 254, fat: 61 },
       supplements: [
         "Creatina 5g post-entreno",
         "30g proteína whey en desayuno",
-        "Aminoácidos durante entrenamiento",
-      ],
+        "Aminoácidos durante entrenamiento"
+      ]
     },
 
     Miércoles: {
       meals: [
-        {
-          name: "Desayuno (pre-entreno)",
-          dish: "Avena ligera + proteína whey + manzana",
-          grams: "40g avena + 20g whey + 150g manzana",
-          kcal: 370,
-          protein: 30,
-          carbs: 45,
-          fat: 4,
-        },
-        {
-          name: "Post-entreno",
-          dish: "Tortilla 3 huevos + arroz + pavo",
-          grams: "3 huevos + 150g arroz + 150g pavo",
-          kcal: 700,
-          protein: 65,
-          carbs: 70,
-          fat: 15,
-        },
-        {
-          name: "Comida",
-          dish: "Lentejas con verduras y sepia",
-          grams: "150g lentejas + 150g verduras + 150g sepia",
-          kcal: 600,
-          protein: 55,
-          carbs: 60,
-          fat: 8,
-        },
-        {
-          name: "Merienda",
-          dish: "Yogur griego + frutos secos + plátano",
-          grams: "200g yogur + 20g nueces + 100g plátano",
-          kcal: 350,
-          protein: 25,
-          carbs: 30,
-          fat: 15,
-        },
-        {
-          name: "Cena",
-          dish: "Salmón a la plancha con judías verdes y patata",
-          grams: "180g salmón + 150g judías verdes + 150g patata",
-          kcal: 650,
-          protein: 60,
-          carbs: 50,
-          fat: 20,
-        },
+        { name: "Desayuno (pre-entreno)", dish: "Avena ligera + proteína whey + manzana", grams: "40g avena + 20g whey + 150g manzana", kcal: 370, protein: 30, carbs: 45, fat: 4 },
+        { name: "Post-entreno", dish: "Tortilla 3 huevos + arroz + pollo", grams: "3 huevos + 150g arroz + 150g pollo", kcal: 700, protein: 65, carbs: 70, fat: 15 },
+        { name: "Comida", dish: "Lentejas con verduras y sepia", grams: "150g lentejas + 150g verduras + 150g sepia", kcal: 600, protein: 55, carbs: 60, fat: 8 },
+        { name: "Merienda", dish: "Yogur griego + frutos secos + plátano", grams: "200g yogur + 20g nueces + 100g plátano", kcal: 350, protein: 25, carbs: 30, fat: 15 },
+        { name: "Cena", dish: "Salmón a la plancha con brócoli y patata", grams: "180g salmón + 150g brócoli + 150g patata", kcal: 660, protein: 60, carbs: 50, fat: 20 }
       ],
-      summary: {
-        kcal: 2670,
-        protein: 235,
-        carbs: 255,
-        fat: 62,
-      },
+      summary: { kcal: 2680, protein: 234, carbs: 254, fat: 61 },
       supplements: [
         "Creatina 5g post-entreno",
         "30g proteína whey en desayuno",
-        "Aminoácidos durante entrenamiento",
-      ],
+        "Aminoácidos durante entrenamiento"
+      ]
     },
 
     Jueves: {
       meals: [
-        {
-          name: "Desayuno (pre-entreno)",
-          dish: "Avena ligera + proteína whey + naranja",
-          grams: "40g avena + 20g whey + 150g naranja",
-          kcal: 360,
-          protein: 29,
-          carbs: 44,
-          fat: 3,
-        },
-        {
-          name: "Post-entreno",
-          dish: "Huevos revueltos + arroz + pollo",
-          grams: "3 huevos + 150g arroz + 150g pollo",
-          kcal: 710,
-          protein: 65,
-          carbs: 70,
-          fat: 15,
-        },
-        {
-          name: "Comida",
-          dish: "Garbanzos con verduras y sepia",
-          grams: "150g garbanzos + 150g verduras + 150g sepia",
-          kcal: 600,
-          protein: 55,
-          carbs: 60,
-          fat: 8,
-        },
-        {
-          name: "Merienda",
-          dish: "Yogur griego + frutos secos + manzana",
-          grams: "200g yogur + 20g nueces + 150g manzana",
-          kcal: 350,
-          protein: 25,
-          carbs: 30,
-          fat: 15,
-        },
-        {
-          name: "Cena",
-          dish: "Salmón a la plancha con brócoli y patata",
-          grams: "180g salmón + 150g brócoli + 150g patata",
-          kcal: 660,
-          protein: 60,
-          carbs: 50,
-          fat: 20,
-        },
+        { name: "Desayuno (pre-entreno)", dish: "Avena ligera + proteína whey + plátano pequeño", grams: "40g avena + 20g whey + 100g plátano", kcal: 370, protein: 30, carbs: 45, fat: 4 },
+        { name: "Post-entreno", dish: "Tortilla 3 huevos + arroz + pavo", grams: "3 huevos + 150g arroz + 150g pavo", kcal: 700, protein: 65, carbs: 70, fat: 15 },
+        { name: "Comida", dish: "Lentejas con verduras y sepia", grams: "150g lentejas + 150g verduras + 150g sepia", kcal: 600, protein: 55, carbs: 60, fat: 8 },
+        { name: "Merienda", dish: "Yogur griego + frutos secos + manzana", grams: "200g yogur + 20g nueces + 150g manzana", kcal: 350, protein: 25, carbs: 30, fat: 15 },
+        { name: "Cena", dish: "Salmón a la plancha con brócoli y patata", grams: "180g salmón + 150g brócoli + 150g patata", kcal: 660, protein: 60, carbs: 50, fat: 20 }
       ],
-      summary: {
-        kcal: 2680,
-        protein: 234,
-        carbs: 254,
-        fat: 61,
-      },
+      summary: { kcal: 2680, protein: 234, carbs: 254, fat: 61 },
       supplements: [
         "Creatina 5g post-entreno",
         "30g proteína whey en desayuno",
-        "Aminoácidos durante entrenamiento",
-      ],
+        "Aminoácidos durante entrenamiento"
+      ]
     },
 
     Viernes: {
       meals: [
-        {
-          name: "Desayuno (pre-entreno)",
-          dish: "Avena ligera + proteína whey + plátano pequeño",
-          grams: "40g avena + 20g whey + 100g plátano",
-          kcal: 370,
-          protein: 30,
-          carbs: 45,
-          fat: 4,
-        },
-        {
-          name: "Post-entreno",
-          dish: "Tortilla 3 huevos + arroz + pavo",
-          grams: "3 huevos + 150g arroz + 150g pavo",
-          kcal: 700,
-          protein: 65,
-          carbs: 70,
-          fat: 15,
-        },
-        {
-          name: "Comida",
-          dish: "Lentejas con verduras y sepia",
-          grams: "150g lentejas + 150g verduras + 150g sepia",
-          kcal: 600,
-          protein: 55,
-          carbs: 60,
-          fat: 8,
-        },
-        {
-          name: "Merienda",
-          dish: "Yogur griego + frutos secos + naranja",
-          grams: "200g yogur + 20g nueces + 150g naranja",
-          kcal: 350,
-          protein: 25,
-          carbs: 30,
-          fat: 15,
-        },
-        {
-          name: "Cena",
-          dish: "Salmón a la plancha con judías verdes y patata",
-          grams: "180g salmón + 150g judías verdes + 150g patata",
-          kcal: 650,
-          protein: 60,
-          carbs: 50,
-          fat: 20,
-        },
+        { name: "Desayuno (pre-entreno)", dish: "Avena ligera + proteína whey + pera", grams: "40g avena + 20g whey + 150g pera", kcal: 360, protein: 29, carbs: 44, fat: 3 },
+        { name: "Post-entreno", dish: "Huevos revueltos + arroz + pollo", grams: "3 huevos + 150g arroz + 150g pollo", kcal: 710, protein: 65, carbs: 70, fat: 15 },
+        { name: "Comida", dish: "Garbanzos con verduras y sepia", grams: "150g garbanzos + 150g verduras + 150g sepia", kcal: 600, protein: 55, carbs: 60, fat: 8 },
+        { name: "Merienda", dish: "Yogur griego + frutos secos + naranja", grams: "200g yogur + 20g nueces + 150g naranja", kcal: 350, protein: 25, carbs: 30, fat: 15 },
+        { name: "Cena", dish: "Salmón a la plancha con judías verdes y patata", grams: "180g salmón + 150g judías verdes + 150g patata", kcal: 650, protein: 60, carbs: 50, fat: 20 }
       ],
-      summary: {
-        kcal: 2670,
-        protein: 235,
-        carbs: 255,
-        fat: 62,
-      },
+      summary: { kcal: 2670, protein: 234, carbs: 254, fat: 61 },
       supplements: [
         "Creatina 5g post-entreno",
         "30g proteína whey en desayuno",
-        "Aminoácidos durante entrenamiento",
-      ],
+        "Aminoácidos durante entrenamiento"
+      ]
     },
 
     Sábado: {
       meals: [
-        {
-          name: "Desayuno (pre-entreno)",
-          dish: "Avena ligera + proteína whey + pera",
-          grams: "40g avena + 20g whey + 150g pera",
-          kcal: 360,
-          protein: 29,
-          carbs: 44,
-          fat: 3,
-        },
-        {
-          name: "Post-entreno",
-          dish: "Huevos revueltos + arroz + pollo",
-          grams: "3 huevos + 150g arroz + 150g pollo",
-          kcal: 710,
-          protein: 65,
-          carbs: 70,
-          fat: 15,
-        },
-        {
-          name: "Comida",
-          dish: "Garbanzos con verduras y sepia",
-          grams: "150g garbanzos + 150g verduras + 150g sepia",
-          kcal: 600,
-          protein: 55,
-          carbs: 60,
-          fat: 8,
-        },
-        {
-          name: "Merienda",
-          dish: "Yogur griego + frutos secos + manzana",
-          grams: "200g yogur + 20g nueces + 150g manzana",
-          kcal: 350,
-          protein: 25,
-          carbs: 30,
-          fat: 15,
-        },
-        {
-          name: "Cena",
-          dish: "Salmón a la plancha con brócoli y patata",
-          grams: "180g salmón + 150g brócoli + 150g patata",
-          kcal: 660,
-          protein: 60,
-          carbs: 50,
-          fat: 20,
-        },
+        { name: "Desayuno (pre-entreno)", dish: "Avena ligera + proteína whey + plátano", grams: "40g avena + 20g whey + 150g plátano", kcal: 370, protein: 30, carbs: 45, fat: 4 },
+        { name: "Post-entreno", dish: "Tortilla 3 huevos + arroz + pavo", grams: "3 huevos + 150g arroz + 150g pavo", kcal: 700, protein: 65, carbs: 70, fat: 15 },
+        { name: "Comida", dish: "Lentejas con verduras y sepia", grams: "150g lentejas + 150g verduras + 150g sepia", kcal: 600, protein: 55, carbs: 60, fat: 8 },
+        { name: "Merienda", dish: "Yogur griego + frutos secos + manzana", grams: "200g yogur + 20g nueces + 150g manzana", kcal: 350, protein: 25, carbs: 30, fat: 15 },
+        { name: "Cena", dish: "Salmón a la plancha con brócoli y patata", grams: "180g salmón + 150g brócoli + 150g patata", kcal: 660, protein: 60, carbs: 50, fat: 20 }
       ],
-      summary: {
-        kcal: 2680,
-        protein: 234,
-        carbs: 254,
-        fat: 61,
-      },
+      summary: { kcal: 2680, protein: 234, carbs: 254, fat: 61 },
       supplements: [
         "Creatina 5g post-entreno",
         "30g proteína whey en desayuno",
-        "Aminoácidos durante entrenamiento",
-      ],
+        "Aminoácidos durante entrenamiento"
+      ]
     },
 
     Domingo: {
       meals: [
-        {
-          name: "Desayuno (pre-entreno)",
-          dish: "Avena ligera + proteína whey + manzana",
-          grams: "40g avena + 20g whey + 150g manzana",
-          kcal: 370,
-          protein: 30,
-          carbs: 45,
-          fat: 4,
-        },
-        {
-          name: "Post-entreno",
-          dish: "Tortilla 3 huevos + arroz + pollo",
-          grams: "3 huevos + 150g arroz + 150g pollo",
-          kcal: 700,
-          protein: 65,
-          carbs: 70,
-          fat: 15,
-        },
-        {
-          name: "Comida",
-          dish: "Lentejas con verduras y sepia",
-          grams: "150g lentejas + 150g verduras + 150g sepia",
-          kcal: 600,
-          protein: 55,
-          carbs: 60,
-          fat: 8,
-        },
-        {
-          name: "Merienda",
-          dish: "Yogur griego + frutos secos + plátano",
-          grams: "200g yogur + 20g nueces + 100g plátano",
-          kcal: 350,
-          protein: 25,
-          carbs: 30,
-          fat: 15,
-        },
-        {
-          name: "Cena",
-          dish: "Salmón a la plancha con judías verdes y patata",
-          grams: "180g salmón + 150g judías verdes + 150g patata",
-          kcal: 650,
-          protein: 60,
-          carbs: 50,
-          fat: 20,
-        },
+        { name: "Desayuno (pre-entreno)", dish: "Avena ligera + proteína whey + pera", grams: "40g avena + 20g whey + 150g pera", kcal: 360, protein: 29, carbs: 44, fat: 3 },
+        { name: "Post-entreno", dish: "Huevos revueltos + arroz + pollo", grams: "3 huevos + 150g arroz + 150g pollo", kcal: 710, protein: 65, carbs: 70, fat: 15 },
+        { name: "Comida", dish: "Garbanzos con verduras y sepia", grams: "150g garbanzos + 150g verduras + 150g sepia", kcal: 600, protein: 55, carbs: 60, fat: 8 },
+        { name: "Merienda", dish: "Yogur griego + frutos secos + naranja", grams: "200g yogur + 20g nueces + 150g naranja", kcal: 350, protein: 25, carbs: 30, fat: 15 },
+        { name: "Cena", dish: "Salmón a la plancha con judías verdes y patata", grams: "180g salmón + 150g judías verdes + 150g patata", kcal: 650, protein: 60, carbs: 50, fat: 20 }
       ],
-      summary: {
-        kcal: 2670,
-        protein: 235,
-        carbs: 255,
-        fat: 62,
-      },
+      summary: { kcal: 2670, protein: 234, carbs: 254, fat: 61 },
       supplements: [
         "Creatina 5g post-entreno",
         "30g proteína whey en desayuno",
-        "Aminoácidos durante entrenamiento",
-      ],
-    },
+        "Aminoácidos durante entrenamiento"
+      ]
+    }
   };
 
   let currentDayIndex = 0;
 
-  // Función para mostrar el día actual
-  function showDay(dayIndex) {
-    const dayName = days[dayIndex];
+  function showDay(index) {
+    const dayName = days[index];
     document.getElementById("dayName").textContent = dayName;
     document.getElementById("dayImage").src = dayImages[dayName];
-    document.getElementById("dayImage").alt = `Imagen para ${dayName}`;
+    document.getElementById("dayImage").alt = `Imagen del menú para ${dayName}`;
+    document.getElementById("daySelector").value = index;
 
-    // Mostrar comidas
     const mealsContainer = document.getElementById("mealsContainer");
-    mealsContainer.innerHTML = ""; // limpiar
-    const dayMenu = menu[dayName];
-
-    dayMenu.meals.forEach(meal => {
-      const mealSection = document.createElement("section");
-      mealSection.className = "meal";
-
-      mealSection.innerHTML = `
-        <h3>${meal.name}</h3>
+    mealsContainer.innerHTML = "";
+    menu[dayName].meals.forEach(meal => {
+      const mealDiv = document.createElement("div");
+      mealDiv.className = "meal";
+      mealDiv.innerHTML = `<h3>${meal.name}</h3>
         <p><strong>Plato:</strong> ${meal.dish}</p>
-        <p class="meal-info">Cantidad: ${meal.grams}</p>
-        <p class="meal-info">Energía: ${meal.kcal} kcal | Proteína: ${meal.protein}g | Carbs: ${meal.carbs}g | Grasas: ${meal.fat}g</p>
-      `;
-      mealsContainer.appendChild(mealSection);
+        <p><strong>Cantidad:</strong> ${meal.grams}</p>
+        <p class="meal-info">Kcal: ${meal.kcal} | Proteína: ${meal.protein}g | Carbs: ${meal.carbs}g | Grasas: ${meal.fat}g</p>`;
+      mealsContainer.appendChild(mealDiv);
     });
 
-    // Mostrar resumen nutricional
-    const summaryDiv = document.getElementById("dailySummary");
-    summaryDiv.innerHTML = `
-      <h3>Resumen nutricional diario</h3>
-      <p><strong>Calorías:</strong> ${dayMenu.summary.kcal} kcal</p>
-      <p><strong>Proteína:</strong> ${dayMenu.summary.protein} g</p>
-      <p><strong>Carbohidratos:</strong> ${dayMenu.summary.carbs} g</p>
-      <p><strong>Grasas:</strong> ${dayMenu.summary.fat} g</p>
-    `;
+    const summary = menu[dayName].summary;
+    document.getElementById("dailySummary").innerHTML = `<h3>Resumen diario</h3>
+      <p><strong>Calorías:</strong> ${summary.kcal} kcal</p>
+      <p><strong>Proteínas:</strong> ${summary.protein} g</p>
+      <p><strong>Carbohidratos:</strong> ${summary.carbs} g</p>
+      <p><strong>Grasas:</strong> ${summary.fat} g</p>`;
 
-    // Mostrar suplementación
-    const suppDiv = document.getElementById("supplements");
-    suppDiv.innerHTML = `
-      <h3>Suplementación recomendada</h3>
-      <ul>
-        ${dayMenu.supplements.map(s => `<li>${s}</li>`).join("")}
-      </ul>
-    `;
+    const supplements = menu[dayName].supplements;
+    document.getElementById("supplements").innerHTML = `<h3>Suplementación</h3>
+      <ul>${supplements.map(s => `<li>${s}</li>`).join('')}</ul>`;
 
-    // Control botones navegación
-    document.getElementById("prevDay").disabled = dayIndex === 0;
-    document.getElementById("nextDay").disabled = dayIndex === days.length - 1;
+    // Habilitar o deshabilitar botones
+    document.getElementById("prevDay").disabled = index === 0;
+    document.getElementById("nextDay").disabled = index === days.length -1;
   }
 
-  // Funciones para botones
+  // Eventos botones
   document.getElementById("prevDay").addEventListener("click", () => {
     if (currentDayIndex > 0) {
       currentDayIndex--;
@@ -625,13 +219,19 @@
   });
 
   document.getElementById("nextDay").addEventListener("click", () => {
-    if (currentDayIndex < days.length - 1) {
+    if (currentDayIndex < days.length -1) {
       currentDayIndex++;
       showDay(currentDayIndex);
     }
   });
 
-  // Inicializar con el primer día
+  // Evento selector
+  document.getElementById("daySelector").addEventListener("change", (e) => {
+    currentDayIndex = parseInt(e.target.value);
+    showDay(currentDayIndex);
+  });
+
+  // Mostrar primer día al cargar
   showDay(currentDayIndex);
 </script>
 
