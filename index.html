@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menú Semanal 2700 kcal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #f3f4f6;
+      margin: 0; padding: 0;
+    }
+    .container {
+      max-width: 480px;
+      margin: auto;
+      padding: 1rem;
+    }
+    button {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-3xl font-bold text-center mb-6">Menú Semanal - 2700 kcal</h1>
+    <div class="grid grid-cols-3 gap-2 mb-4">
+      <button class="bg-white rounded shadow py-2 hover:bg-gray-200" onclick="mostrarDia('lunes')">Lunes</button>
+      <button class="bg-white rounded shadow py-2 hover:bg-gray-200" onclick="mostrarDia('martes')">Martes</button>
+      <button class="bg-white rounded shadow py-2 hover:bg-gray-200" onclick="mostrarDia('miercoles')">Miércoles</button>
+      <button class="bg-white rounded shadow py-2 hover:bg-gray-200" onclick="mostrarDia('jueves')">Jueves</button>
+      <button class="bg-white rounded shadow py-2 hover:bg-gray-200" onclick="mostrarDia('viernes')">Viernes</button>
+      <button class="bg-white rounded shadow py-2 hover:bg-gray-200" onclick="mostrarDia('sabado')">Sábado</button>
+      <button class="bg-white rounded shadow py-2 hover:bg-gray-200" onclick="mostrarDia('domingo')">Domingo</button>
+    </div>
+
+    <div id="contenido" class="space-y-4"></div>
+  </div>
+
+  <script>
+    const menu = {
+      lunes: [
+        { momento: "Preentreno", plato: "Avena con leche y plátano", ingredientes: "60g avena, 200ml leche, 100g plátano", macros: "14P / 6F / 35C / 280 kcal" },
+        { momento: "Postentreno", plato: "Batido whey con creatina", ingredientes: "30g proteína, 250ml leche, 5g creatina", macros: "35P / 6F / 10C / 250 kcal" },
+        { momento: "Comida", plato: "Pollo con arroz y verduras", ingredientes: "150g pollo, 100g arroz, 100g verdura, 10g AOVE", macros: "45P / 12F / 40C / 520 kcal" },
+        { momento: "Merienda", plato: "Yogur con avena y frutos secos", ingredientes: "150g yogur, 30g avena, 15g nueces", macros: "15P / 12F / 20C / 250 kcal" },
+        { momento: "Cena", plato: "Salmón con puré de patata", ingredientes: "150g salmón, 150g patata, 10g AOVE", macros: "35P / 20F / 25C / 520 kcal" },
+        { momento: "Snack", plato: "Requesón con fruta", ingredientes: "150g requesón, 100g fruta", macros: "18P / 4F / 18C / 180 kcal" },
+        { momento: "TOTAL", plato: "", ingredientes: "", macros: "162P / 60F / 148C / 2000 kcal aprox" }
+      ],
+      martes: [
+        { momento: "Preentreno", plato: "Tostadas con huevo y aguacate", ingredientes: "60g pan integral, 2 huevos, 30g aguacate", macros: "22P / 15F / 25C / 330 kcal" },
+        { momento: "Postentreno", plato: "Whey + leche + creatina", ingredientes: "30g whey, 250ml leche, 5g creatina", macros: "35P / 6F / 10C / 250 kcal" },
+        { momento: "Comida", plato: "Lentejas con arroz y verduras", ingredientes: "150g lentejas cocidas, 100g arroz, 100g verduras, 10g AOVE", macros: "30P / 10F / 50C / 500 kcal" },
+        { momento: "Merienda", plato: "Yogur con avena", ingredientes: "150g yogur, 30g avena", macros: "13P / 5F / 20C / 210 kcal" },
+        { momento: "Cena", plato: "Atún con judías verdes", ingredientes: "150g atún, 100g judías, 10g AOVE", macros: "35P / 10F / 10C / 320 kcal" },
+        { momento: "Snack", plato: "Requesón con avena", ingredientes: "150g requesón, 30g avena", macros: "20P / 6F / 20C / 240 kcal" },
+        { momento: "TOTAL", plato: "", ingredientes: "", macros: "155P / 52F / 135C / 1850 kcal aprox" }
+      ],
+      miercoles: [
+        { momento: "Preentreno", plato: "Avena con leche y manzana", ingredientes: "60g avena, 200ml leche, 100g manzana", macros: "13P / 6F / 35C / 270 kcal" },
+        { momento: "Postentreno", plato: "Batido whey con leche", ingredientes: "30g whey, 200ml leche", macros: "35P / 5F / 8C / 230 kcal" },
+        { momento: "Comida", plato: "Garbanzos con verduras", ingredientes: "150g garbanzos cocidos, 100g verduras, 10g AOVE", macros: "25P / 10F / 45C / 460 kcal" },
+        { momento: "Merienda", plato: "Yogur con avena", ingredientes: "150g yogur, 30g avena", macros: "13P / 5F / 20C / 210 kcal" },
+        { momento: "Cena", plato: "Pechuga de pavo con arroz y brócoli", ingredientes: "150g pavo, 100g arroz, 100g brócoli, 10g AOVE", macros: "40P / 10F / 35C / 500 kcal" },
+        { momento: "Snack", plato: "Requesón con plátano", ingredientes: "150g requesón, 100g plátano", macros: "20P / 4F / 20C / 200 kcal" },
+        { momento: "TOTAL", plato: "", ingredientes: "", macros: "146P / 40F / 163C / 1870 kcal aprox" }
+      ],
+      jueves: [
+        { momento: "Preentreno", plato: "Tostadas con queso fresco y miel", ingredientes: "60g pan integral, 50g queso fresco, 10g miel", macros: "20P / 6F / 35C / 310 kcal" },
+        { momento: "Postentreno", plato: "Whey con leche y creatina", ingredientes: "30g whey, 250ml leche, 5g creatina", macros: "35P / 6F / 10C / 250 kcal" },
+        { momento: "Comida", plato: "Judías con arroz y pollo", ingredientes: "150g judías cocidas, 100g arroz, 150g pollo, 10g AOVE", macros: "45P / 12F / 40C / 520 kcal" },
+        { momento: "Merienda", plato: "Yogur con fruta y nueces", ingredientes: "150g yogur, 100g fruta, 15g nueces", macros: "15P / 12F / 20C / 270 kcal" },
+        { momento: "Cena", plato: "Sepia a la plancha con verduras", ingredientes: "150g sepia, 150g verduras, 10g AOVE", macros: "35P / 10F / 15C / 400 kcal" },
+        { momento: "Snack", plato: "Requesón con avena", ingredientes: "150g requesón, 30g avena", macros: "20P / 6F / 20C / 240 kcal" },
+        { momento: "TOTAL", plato: "", ingredientes: "", macros: "170P / 52F / 140C / 1890 kcal aprox" }
+      ],
+      sabado: [
+        { momento: "Preentreno", plato: "Avena con yogur y frutos secos", ingredientes: "60g avena, 150g yogur, 15g nueces", macros: "20P / 12F / 30C / 350 kcal" },
+        { momento: "Postentreno", plato: "Batido whey con creatina", ingredientes: "30g proteína, 250ml leche, 5g creatina", macros: "35P / 6F / 10C / 250 kcal" },
+        { momento: "Comida", plato: "Pechuga de pavo con arroz y brócoli", ingredientes: "150g pavo, 100g arroz, 100g brócoli, 10g AOVE", macros: "40P / 10F / 35C / 500 kcal" },
+        { momento: "Merienda", plato: "Yogur con fruta", ingredientes: "150g yogur, 100g fruta", macros: "15P / 4F / 20C / 200 kcal" },
+        { momento: "Cena", plato: "Salmón con puré de patata", ingredientes: "150g salmón, 150g patata, 10g AOVE", macros: "35P / 20F / 25C / 520 kcal" },
+        { momento: "Snack", plato: "Requesón con plátano", ingredientes: "150g requesón, 100g plátano", macros: "20P / 4F / 20C / 200 kcal" },
+        { momento: "TOTAL", plato: "", ingredientes: "", macros: "165P / 56F / 140C / 2020 kcal aprox" }
+      ],
+      domingo: [
+        { momento: "Preentreno", plato: "Tostadas con huevo y aguacate", ingredientes: "60g pan integral, 2 huevos, 30g aguacate", macros: "22P / 15F / 25C / 330 kcal" },
+        { momento: "Postentreno", plato: "Whey + leche + creatina", ingredientes: "30g whey, 250ml leche, 5g creatina", macros: "35P / 6F / 10C / 250 kcal" },
+        { momento: "Comida", plato: "Lentejas con arroz y verduras", ingredientes: "150g lentejas cocidas, 100g arroz, 100g verduras, 10g AOVE", macros: "30P / 10F / 50C / 500 kcal" },
+        { momento: "Merienda", plato: "Yogur con avena", ingredientes: "150g yogur, 30g avena", macros: "13P / 5F / 20C / 210 kcal" },
+        { momento: "Cena", plato: "Atún con judías verdes", ingredientes: "150g atún, 100g judías, 10g AOVE", macros: "35P / 10F / 10C / 320 kcal" },
+        { momento: "Snack", plato: "Requesón con avena", ingredientes: "150g requesón, 30g avena", macros: "20P / 6F / 20C / 240 kcal" },
+        { momento: "TOTAL", plato: "", ingredientes: "", macros: "155P / 52F / 135C / 1850 kcal aprox" }
+      ]
+    };
+
+    function mostrarDia(dia) {
+      const cont = document.getElementById('contenido');
+      cont.innerHTML = '';
+      if (!menu[dia]) {
+        cont.innerHTML = '<p class="text-center text-red-600">Día no encontrado</p>';
+        return;
+      }
+      const comidas = menu[dia];
+      comidas.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "bg-white rounded shadow p-4";
+        div.innerHTML = `
+          <h2 class="text-xl font-semibold mb-1">${item.momento} - ${item.plato}</h2>
+          <p><strong>Ingredientes:</strong> ${item.ingredientes}</p>
+          <p><strong>Macros:</strong> ${item.macros}</p>
+        `;
+        cont.appendChild(div);
+      });
+    }
+
+    // Mostrar lunes al cargar la página
+    mostrarDia('lunes');
+  </script>
+</body>
+</html>
