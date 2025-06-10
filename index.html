@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Menú semanal corregido</title>
+  <title>Menú semanal con pescado en cenas y whey en meriendas días crossfit</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
+      background: #f9f9f9;
       margin: 0;
       padding: 0;
     }
@@ -31,25 +31,25 @@
       padding: 0.5rem;
     }
     .meal {
-      background-color: white;
-      padding: 1rem;
-      margin-bottom: 1rem;
+      background: white;
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+      padding: 1rem;
     }
     .summary, .supplement {
-      background-color: #eaf2f8;
-      padding: 1rem;
+      background: #eaf2f8;
       border-radius: 8px;
-      text-align: center;
       font-weight: bold;
       margin-top: 1rem;
+      padding: 1rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Menú semanal (con whey en meriendas días crossfit)</h1>
+    <h1>Menú semanal (pescado en cenas + whey en meriendas crossfit)</h1>
     <p>Objetivo: recomposición corporal (2700 kcal/día)</p>
   </header>
   <main>
@@ -68,7 +68,6 @@
     <div id="menu"></div>
   </main>
   <script>
-    // Datos menú, con whey en meriendas lunes, martes, jueves y viernes
     const lunes = [
       { comida: 'Pre-entreno', plato: 'Avena con leche y plátano', ingredientes: 'Avena 40g, leche 150ml, plátano 80g', kcal: 320, prot: 12, grasas: 8, carbos: 45 },
       { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 30g, nueces 15g, agua', kcal: 230, prot: 27, grasas: 10, carbos: 5 },
@@ -80,9 +79,9 @@
     const martes = [
       { comida: 'Pre-entreno', plato: 'Avena con leche y plátano', ingredientes: 'Avena 40g, leche 150ml, plátano 80g', kcal: 320, prot: 12, grasas: 8, carbos: 45 },
       { comida: 'Post-entreno', plato: 'Batido whey y plátano', ingredientes: 'Whey 30g, plátano 100g, agua', kcal: 250, prot: 27, grasas: 2, carbos: 20 },
-      { comida: 'Comida', plato: 'Garbanzos con atún y ensalada', ingredientes: 'Garbanzos 80g seco, atún 80g, verdura 100g, AOVE 5g', kcal: 500, prot: 35, grasas: 16, carbos: 30 },
+      { comida: 'Comida', plato: 'Garbanzos con pavo y ensalada', ingredientes: 'Garbanzos 80g seco, pavo 150g, verdura 100g, AOVE 5g', kcal: 550, prot: 40, grasas: 16, carbos: 30 },
       { comida: 'Merienda', plato: 'Whey 20g con frutos secos', ingredientes: 'Whey 20g, almendras 20g', kcal: 230, prot: 27, grasas: 14, carbos: 5 },
-      { comida: 'Cena', plato: 'Pechuga de pavo con arroz y espinacas', ingredientes: 'Pavo 150g, arroz 80g seco, espinacas 100g, AOVE 5g', kcal: 600, prot: 45, grasas: 18, carbos: 35 },
+      { comida: 'Cena', plato: 'Bacalao con patata y guisantes', ingredientes: 'Bacalao 150g, patata 150g, guisantes 100g, AOVE 5g', kcal: 620, prot: 42, grasas: 25, carbos: 30 },
     ];
 
     const miercoles = [
@@ -90,7 +89,7 @@
       { comida: 'Post-entreno', plato: 'Whey 30g con agua', ingredientes: 'Whey 30g, agua', kcal: 120, prot: 27, grasas: 0, carbos: 0 },
       { comida: 'Comida', plato: 'Lentejas con sepia y verduras', ingredientes: 'Lentejas 80g seco, sepia 120g, verduras 100g, AOVE 5g', kcal: 600, prot: 42, grasas: 12, carbos: 50 },
       { comida: 'Merienda', plato: 'Manzana y puñado de frutos secos', ingredientes: 'Manzana 150g, nueces 20g', kcal: 250, prot: 5, grasas: 15, carbos: 30 },
-      { comida: 'Cena', plato: 'Bacalao con patata y guisantes', ingredientes: 'Bacalao 150g, patata 150g, guisantes 100g, AOVE 5g', kcal: 620, prot: 42, grasas: 25, carbos: 30 },
+      { comida: 'Cena', plato: 'Merluza con patata y ensalada', ingredientes: 'Merluza 150g, patata 150g, ensalada 100g, AOVE 5g', kcal: 610, prot: 45, grasas: 20, carbos: 30 },
     ];
 
     const jueves = [
@@ -98,7 +97,7 @@
       { comida: 'Post-entreno', plato: 'Batido whey con chocolate puro', ingredientes: 'Whey 30g, cacao puro 10g, agua', kcal: 260, prot: 27, grasas: 3, carbos: 15 },
       { comida: 'Comida', plato: 'Arroz con pollo y verduras', ingredientes: 'Arroz 100g seco, pollo 150g, verduras 100g, AOVE 5g', kcal: 650, prot: 45, grasas: 18, carbos: 50 },
       { comida: 'Merienda', plato: 'Whey 20g con yogur natural', ingredientes: 'Whey 20g, yogur 125g', kcal: 180, prot: 27, grasas: 3, carbos: 7 },
-      { comida: 'Cena', plato: 'Pavo con pasta integral y espinacas', ingredientes: 'Pavo 150g, pasta 80g seco, espinacas 100g, AOVE 5g', kcal: 610, prot: 44, grasas: 17, carbos: 35 },
+      { comida: 'Cena', plato: 'Salmón con espárragos y patata', ingredientes: 'Salmón 150g, espárragos 100g, patata 150g, AOVE 5g', kcal: 610, prot: 40, grasas: 30, carbos: 25 },
     ];
 
     const viernes = [
@@ -106,21 +105,21 @@
       { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 30g, nueces 15g, agua', kcal: 230, prot: 27, grasas: 10, carbos: 5 },
       { comida: 'Comida', plato: 'Judías con atún y verduras', ingredientes: 'Judías 80g seco, atún 80g, verduras 100g, AOVE 5g', kcal: 550, prot: 40, grasas: 15, carbos: 40 },
       { comida: 'Merienda', plato: 'Whey 20g con frutos secos', ingredientes: 'Whey 20g, almendras 20g', kcal: 230, prot: 27, grasas: 14, carbos: 5 },
-      { comida: 'Cena', plato: 'Merluza con patata y ensalada', ingredientes: 'Merluza 150g, patata 150g, ensalada 100g, AOVE 5g', kcal: 610, prot: 45, grasas: 20, carbos: 30 },
+      { comida: 'Cena', plato: 'Bacalao con puré de calabaza', ingredientes: 'Bacalao 150g, calabaza 150g, AOVE 5g', kcal: 600, prot: 45, grasas: 20, carbos: 30 },
     ];
 
     const sabado = [
       { comida: 'Desayuno', plato: 'Tostada integral con aguacate y tomate', ingredientes: 'Pan integral 60g, aguacate 50g, tomate 50g', kcal: 350, prot: 8, grasas: 15, carbos: 40 },
       { comida: 'Comida', plato: 'Ensalada de quinoa con pollo y verduras', ingredientes: 'Quinoa 80g seco, pollo 150g, verduras 100g, AOVE 5g', kcal: 600, prot: 45, grasas: 18, carbos: 50 },
       { comida: 'Merienda', plato: 'Frutos secos y fruta', ingredientes: 'Almendras 20g, plátano 100g', kcal: 260, prot: 7, grasas: 16, carbos: 25 },
-      { comida: 'Cena', plato: 'Tortilla de 3 huevos con espinacas y champiñones', ingredientes: 'Huevos 3, espinacas 100g, champiñones 50g, AOVE 5g', kcal: 550, prot: 40, grasas: 35, carbos: 10 },
+      { comida: 'Cena', plato: 'Merluza con brócoli y patata', ingredientes: 'Merluza 150g, brócoli 100g, patata 150g, AOVE 5g', kcal: 610, prot: 45, grasas: 20, carbos: 30 },
     ];
 
     const domingo = [
       { comida: 'Desayuno', plato: 'Smoothie bowl con fruta y avena', ingredientes: 'Avena 40g, plátano 80g, leche 150ml, frutos rojos 100g', kcal: 350, prot: 12, grasas: 8, carbos: 50 },
       { comida: 'Comida', plato: 'Paella de marisco con verduras', ingredientes: 'Arroz 100g, marisco 150g, verduras 100g, AOVE 5g', kcal: 650, prot: 45, grasas: 18, carbos: 55 },
       { comida: 'Merienda', plato: 'Yogur natural y nueces', ingredientes: 'Yogur 125g, nueces 15g', kcal: 220, prot: 8, grasas: 15, carbos: 10 },
-      { comida: 'Cena', plato: 'Pechuga de pollo con patata y ensalada', ingredientes: 'Pechuga 150g, patata 150g, ensalada 100g, AOVE 5g', kcal: 600, prot: 45, grasas: 18, carbos: 30 },
+      { comida: 'Cena', plato: 'Salmón a la plancha con ensalada', ingredientes: 'Salmón 150g, ensalada 150g, AOVE 5g', kcal: 600, prot: 45, grasas: 25, carbos: 15 },
     ];
 
     // Suplementación creatina
