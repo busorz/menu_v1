@@ -59,6 +59,7 @@
   </style>
 </head>
 <body>
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">Modo oscuro</button>
   <header>
     <h1>Menú semanal - Crossfit 4 días, correr 1 o 2. Pesas 1 (2700 kcal)</h1>
     <p>Objetivo: recomposición corporal (~2700 kcal/día, menos actividad sábado y domingo)</p>
@@ -174,6 +175,29 @@
 
       document.getElementById('menu').innerHTML = html;
     }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      const btn = document.querySelector('.dark-mode-toggle');
+      if (document.body.classList.contains('dark')) {
+        btn.textContent = 'Modo claro';
+        localStorage.setItem('darkMode', 'true');
+      } else {
+        btn.textContent = 'Modo oscuro';
+        localStorage.setItem('darkMode', 'false');
+      }
+    }
+
+    window.onload = () => {
+      // Cargar preferencia modo oscuro
+      const darkModePref = localStorage.getItem('darkMode');
+      if (darkModePref === null || darkModePref === 'true') {
+        document.body.classList.add('dark');
+        document.querySelector('.dark-mode-toggle').textContent = 'Modo claro';
+      } else {
+        document.body.classList.remove('dark');
+        document.querySelector('.dark-mode-toggle').textContent = 'Modo oscuro';
+      }
 
     function onDayChange() {
       const dia = document.getElementById('day').value;
