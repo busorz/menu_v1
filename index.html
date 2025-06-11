@@ -210,10 +210,10 @@
 
     // Función para preguntar dónde quieres añadir el batido extra sábado/domingo
     function preguntaBatido() {
-      let ubicacion = prompt('¿Quieres añadir un batido de whey extra en sábado y domingo? Escribe "media mañana" o "merienda" (o deja vacío para no añadir).');
+      let ubicacion = prompt('¿Quieres añadir un batido de whey extra en sábado y domingo? Escribe "mañana" o "tarde" (o deja vacío para no añadir).');
       if (ubicacion) {
         ubicacion = ubicacion.toLowerCase();
-        if (ubicacion !== 'media mañana' && ubicacion !== 'merienda') {
+        if (ubicacion !== 'mañana' && ubicacion !== 'tarde') {
           ubicacion = null;
         }
       } else {
@@ -239,7 +239,7 @@
           }
         } else {
           ubicacionBatido = localStorage.getItem('batidoUbicacion');
-          incluirBatido = ubicacionBatido === 'media mañana' || ubicacionBatido === 'merienda';
+          incluirBatido = ubicacionBatido === 'Mañana' || ubicacionBatido === 'Tarde';
         }
       }
 
@@ -255,10 +255,10 @@
       }
 
       if (incluirBatido && (dia === 'sabado' || dia === 'domingo')) {
-        if (ubicacionBatido === 'media mañana') {
+        if (ubicacionBatido === 'Mañana') {
           // Añadir batido después del desayuno (posición 1)
           menuDia.splice(1, 0, batidoExtra);
-        } else if (ubicacionBatido === 'merienda') {
+        } else if (ubicacionBatido === 'Tarde') {
           // Añadir batido antes de la cena
           let posCena = menuDia.findIndex(m => m.comida.toLowerCase().includes('cena'));
           if (posCena === -1) posCena = menuDia.length;
@@ -293,7 +293,7 @@
         </div>`;
       } else if (dia === 'sabado' || dia === 'domingo') {
         html += `<div class="supplement" style="color:#ff7043;">
-          <p>Para añadir un batido de whey extra, recarga la página y elige "media mañana" o "merienda" cuando se pregunte.</p>
+          <p>Para añadir un batido de whey extra, recarga la página y elige "Mañana" o "Tarde" cuando se pregunte.</p>
         </div>`;
       }
 
