@@ -116,43 +116,25 @@
     ];
 
     const domingo = [
-      { comida: 'Desayuno', plato: 'Smoothie bowl con fruta y avena', ingredientes: 'Avena 40g, plátano 80g, leche 150ml, frutos rojos 100g', kcal: 350, prot: 12, grasas: 8, carbos: 50 },
-      { comida: 'Comida', plato: 'Paella de marisco con verduras', ingredientes: 'Arroz 100g, marisco 150g, verduras 100g, AOVE 5g', kcal: 650, prot: 45, grasas: 18, carbos: 55 },
-      { comida: 'Merienda', plato: 'Yogur natural y nueces', ingredientes: 'Yogur 125g, nueces 15g', kcal: 220, prot: 8, grasas: 15, carbos: 10 },
-      { comida: 'Cena', plato: 'Salmón a la plancha con ensalada', ingredientes: 'Salmón 150g, ensalada 150g, AOVE 5g', kcal: 600, prot: 45, grasas: 25, carbos: 15 },
+      { comida: 'Desayuno', plato: 'Huevos revueltos con espinacas y pan integral', ingredientes: 'Huevos 3 uds, espinacas 50g, pan integral 60g', kcal: 400, prot: 30, grasas: 25, carbos: 30 },
+      { comida: 'Comida', plato: 'Pollo con patata y verduras al horno', ingredientes: 'Pollo 150g, patata 150g, verduras 100g, AOVE 5g', kcal: 650, prot: 45, grasas: 18, carbos: 50 },
+      { comida: 'Merienda', plato: 'Yogur natural con frutos secos', ingredientes: 'Yogur 125g, nueces 20g', kcal: 250, prot: 15, grasas: 15, carbos: 10 },
+      { comida: 'Cena', plato: 'Salmón con ensalada variada', ingredientes: 'Salmón 150g, ensalada 150g, AOVE 5g', kcal: 600, prot: 40, grasas: 30, carbos: 20 },
     ];
 
-    // Suplementación creatina
-    const suplementacion = {
-      lunes: ['Creatina 3g pre-entreno', 'Creatina 3g post-entreno'],
-      martes: ['Creatina 3g pre-entreno', 'Creatina 3g post-entreno'],
-      miercoles: ['Creatina 3g en ayunas'],
-      jueves: ['Creatina 3g pre-entreno', 'Creatina 3g post-entreno'],
-      viernes: ['Creatina 3g pre-entreno', 'Creatina 3g post-entreno'],
-      sabado: ['Creatina 3g en ayunas'],
-      domingo: ['Creatina 3g en ayunas'],
+    const menuData = {
+      lunes, martes, miercoles, jueves, viernes, sabado, domingo
     };
 
     function renderMenu() {
       const day = document.getElementById('day').value;
-      let menuData;
-
-      switch(day) {
-        case 'lunes': menuData = lunes; break;
-        case 'martes': menuData = martes; break;
-        case 'miercoles': menuData = miercoles; break;
-        case 'jueves': menuData = jueves; break;
-        case 'viernes': menuData = viernes; break;
-        case 'sabado': menuData = sabado; break;
-        case 'domingo': menuData = domingo; break;
-      }
-
-      const menuDiv = document.getElementById('menu');
-      menuDiv.innerHTML = '';
+      const menu = menuData[day];
+      const container = document.getElementById('menu');
+      container.innerHTML = '';
 
       let totalKcal = 0, totalProt = 0, totalGrasas = 0, totalCarbos = 0;
 
-      menuData.forEach(item => {
+      menu.forEach(item => {
         totalKcal += item.kcal;
         totalProt += item.prot;
         totalGrasas += item.grasas;
@@ -160,26 +142,38 @@
 
         const mealDiv = document.createElement('div');
         mealDiv.className = 'meal';
-        mealDiv.innerHTML = `
-          <h3>${item.comida}</h3>
+        mealDiv.innerHTML = `<h3>${item.comida}</h3>
           <p><strong>Plato:</strong> ${item.plato}</p>
           <p><strong>Ingredientes:</strong> ${item.ingredientes}</p>
-          <p><strong>Kcal:</strong> ${item.kcal} | <strong>Proteínas:</strong> ${item.prot} g | <strong>Grasas:</strong> ${item.grasas} g | <strong>Carbohidratos:</strong> ${item.carbos} g</p>
-        `;
-        menuDiv.appendChild(mealDiv);
+          <p><strong>Valores nutricionales:</strong> ${item.kcal} kcal, ${item.prot} g proteínas, ${item.grasas} g grasas, ${item.carbos} g carbohidratos</p>`;
+        container.appendChild(mealDiv);
       });
 
-      const summaryDiv = document.createElement('div');
-      summaryDiv.className = 'summary';
-      summaryDiv.innerHTML = `Total diario: ${totalKcal} kcal | Proteínas: ${totalProt.toFixed(1)} g | Grasas: ${totalGrasas.toFixed(1)} g | Carbohidratos: ${totalCarbos.toFixed(1)} g`;
-      menuDiv.appendChild(summaryDiv);
+      // Mostrar resumen
+      const summary = document.createElement('div');
+      summary.className = 'summary';
+      summary.innerHTML = `<p><strong>Total kcal:</strong> ${totalKcal} kcal</p>
+        <p><strong>Total proteínas:</strong> ${totalProt.toFixed(1)} g</p>
+        <p><strong>Total grasas:</strong> ${totalGrasas.toFixed(1)} g</p>
+        <p><strong>Total carbohidratos:</strong> ${totalCarbos.toFixed(1)} g</p>`;
+      container.appendChild(summary);
 
-      const suppDiv = document.createElement('div');
-      suppDiv.className = 'supplement';
-      suppDiv.innerHTML = 'Suplementación: ' + suplementacion[day].join(', ');
-      menuDiv.appendChild(suppDiv);
+      // Mostrar suplementación recomendada
+      let suplementoText = '';
+      if(['lunes', 'martes', 'jueves', 'viernes'].includes(day)) {
+        suplementoText = 'Suplementación: Aminoácidos intra-entreno, creatina post-entreno.';
+      } else if(day === 'miercoles') {
+        suplementoText = 'Suplementación: Creatina post-entreno.';
+      } else {
+        suplementoText = 'Sin suplementación específica.';
+      }
+      const suplementoDiv = document.createElement('div');
+      suplementoDiv.className = 'supplement';
+      suplementoDiv.textContent = suplementoText;
+      container.appendChild(suplementoDiv);
     }
 
+    // Mostrar menú inicial (lunes)
     renderMenu();
   </script>
 </body>
