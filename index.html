@@ -3,47 +3,189 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Menú Semanal</title>
+  <title>Menú semanal - Crossfit 4 días, correr 1 o 2. Pesas 1 (2700 kcal)</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; max-width: 700px; }
-    h2 { color: #2c3e50; }
-    .meal { margin-bottom: 15px; padding: 10px; background: #ecf0f1; border-radius: 6px; }
-    .summary, .supplement { margin-top: 20px; padding: 10px; background: #dfe6e9; border-radius: 6px; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #121212;
+      color: #e0e0e0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.light {
+      background: #f0f0f0;
+      color: #202020;
+    }
+    header {
+      background-color: #1f1f1f;
+      color: #f0f0f0;
+      text-align: center;
+      padding: 1rem;
+      border-bottom: 1px solid #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.light header {
+      background-color: #ddd;
+      color: #222;
+      border-bottom: 1px solid #aaa;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #1e1e1e;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.7);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.light main {
+      background: #fff;
+      color: #111;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    .day-selector {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    select {
+      font-size: 1rem;
+      padding: 0.5rem;
+      background: #333;
+      color: #e0e0e0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.light select {
+      background: #eee;
+      color: #222;
+    }
+    button#toggleMode {
+      margin-left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #444;
+      color: #eee;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.light button#toggleMode {
+      background-color: #ccc;
+      color: #222;
+    }
+    .meal {
+      background: #292929;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.8);
+      margin-bottom: 1rem;
+      padding: 1rem;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.light .meal {
+      background: #f7f7f7;
+      color: #222;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .summary, .supplement {
+      background: #2a2a2a;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 1rem;
+      padding: 1rem;
+      text-align: center;
+      color: #81c784;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.light .summary, body.light .supplement {
+      background: #d1e7cd;
+      color: #2e7d32;
+    }
   </style>
 </head>
 <body>
-  <h1>Menú Semanal</h1>
-  <label for="diaSelect">Selecciona el día:</label>
-  <select id="diaSelect">
-    <option value="lunes">Lunes</option>
-    <option value="martes">Martes</option>
-    <option value="miercoles">Miércoles</option>
-    <option value="jueves">Jueves</option>
-    <option value="viernes">Viernes</option>
-    <option value="sabado">Sábado</option>
-    <option value="domingo">Domingo</option>
-  </select>
-
-  <div id="menuContainer" style="margin-top:20px;"></div>
-
+  <header>
+    <h1>Menú semanal - Crossfit 4 días, correr 1 o 2. Pesas 1 (2700 kcal)</h1>
+    <p>Objetivo: recomposición corporal (~2700 kcal/día, menos actividad sábado y domingo)</p>
+    <button id="toggleMode">Modo Claro</button>
+  </header>
+  <main>
+    <div class="day-selector">
+      <label for="day">Selecciona un día: </label>
+      <select id="day" onchange="onDayChange()">
+        <option value="lunes">Lunes</option>
+        <option value="martes">Martes</option>
+        <option value="miercoles">Miércoles</option>
+        <option value="jueves">Jueves</option>
+        <option value="viernes">Viernes</option>
+        <option value="sabado">Sábado</option>
+        <option value="domingo">Domingo</option>
+      </select>
+    </div>
+    <div id="menu"></div>
+  </main>
   <script>
-    const lunes = [
-      { comida: 'Pre-entreno', plato: 'Avena con plátano y leche', ingredientes: 'Avena 60g, plátano 100g, leche 200ml', kcal: 550, prot: 18, grasas: 10, carbos: 70 },
-      { comida: 'Post-entreno', plato: 'Batido whey y almendras', ingredientes: 'Whey 40g, almendras 25g, agua', kcal: 390, prot: 38, grasas: 17, carbos: 7 },
-      { comida: 'Comida', plato: 'Pollo con arroz integral y verduras', ingredientes: 'Pollo 180g, arroz integral 130g seco, verduras 120g, AOVE 10g', kcal: 880, prot: 55, grasas: 25, carbos: 60 },
-      { comida: 'Merienda', plato: 'Yogur con nueces', ingredientes: 'Yogur natural 150g, nueces 20g', kcal: 280, prot: 30, grasas: 8, carbos: 8 },
-      { comida: 'Cena', plato: 'Merluza con patata y espinacas', ingredientes: 'Merluza 180g, patata 180g, espinacas 150g, AOVE 10g', kcal: 570, prot: 45, grasas: 28, carbos: 35 },
-    ];
+    const toggleBtn = document.getElementById('toggleMode');
 
+    function setMode(mode) {
+      if (mode === 'light') {
+        document.body.classList.add('light');
+        toggleBtn.textContent = 'Modo Oscuro';
+      } else {
+        document.body.classList.remove('light');
+        toggleBtn.textContent = 'Modo Claro';
+      }
+      localStorage.setItem('menuModo', mode);
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const currentMode = document.body.classList.contains('light') ? 'light' : 'dark';
+      setMode(currentMode === 'light' ? 'dark' : 'light');
+    });
+
+    // Al cargar la página, carga modo guardado o usa oscuro por defecto
+    window.onload = () => {
+      const modoGuardado = localStorage.getItem('menuModo') || 'dark';
+      setMode(modoGuardado);
+
+      const diaGuardado = localStorage.getItem('menuDiaSeleccionado') || 'lunes';
+      document.getElementById('day').value = diaGuardado;
+      renderMenu(diaGuardado);
+    };
+
+    // Datos comidas por día
+    const lunes = [
+      { comida: 'Pre-entreno', plato: 'Avena con leche y plátano', ingredientes: 'Avena 60g, leche 200ml, plátano 100g', kcal: 570, prot: 18, grasas: 10, carbos: 65 },
+      { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 40g, nueces 25g, agua', kcal: 370, prot: 36, grasas: 18, carbos: 6 },
+      { comida: 'Comida', plato: 'Pollo con arroz y verduras', ingredientes: 'Pollo 180g, arroz 130g seco, verduras 120g, AOVE 10g', kcal: 880, prot: 55, grasas: 25, carbos: 65 },
+      { comida: 'Merienda', plato: 'Whey 25g con yogur natural', ingredientes: 'Whey 25g, yogur 150g', kcal: 300, prot: 33, grasas: 4, carbos: 9 },
+      { comida: 'Cena', plato: 'Salmón con patata y calabacín', ingredientes: 'Salmón 180g, patata 180g, calabacín 180g, AOVE 10g', kcal: 560, prot: 48, grasas: 36, carbos: 30 },
+    ];
     const martes = [
-      { comida: 'Pre-entreno', plato: 'Pan integral con aguacate y huevo', ingredientes: 'Pan integral 2 rebanadas, aguacate 50g, huevo 2 uds', kcal: 520, prot: 20, grasas: 18, carbos: 50 },
+      { comida: 'Pre-entreno', plato: 'Tostadas integrales con mermelada y plátano', ingredientes: 'Pan integral 2 rebanadas, mermelada 20g, plátano 100g', kcal: 520, prot: 13, grasas: 5, carbos: 85 },
+      { comida: 'Post-entreno', plato: 'Batido whey y almendras', ingredientes: 'Whey 40g, almendras 25g, agua', kcal: 390, prot: 38, grasas: 17, carbos: 7 },
+      { comida: 'Comida', plato: 'Ternera con pasta integral y verduras', ingredientes: 'Ternera 170g, pasta integral 130g seca, verduras 120g, AOVE 10g', kcal: 890, prot: 55, grasas: 28, carbos: 60 },
+      { comida: 'Merienda', plato: 'Queso fresco batido con nueces', ingredientes: 'Queso fresco batido 150g, nueces 20g', kcal: 280, prot: 30, grasas: 8, carbos: 8 },
+      { comida: 'Cena', plato: 'Merluza con arroz y espinacas', ingredientes: 'Merluza 180g, arroz 150g cocido, espinacas 150g, AOVE 10g', kcal: 570, prot: 45, grasas: 28, carbos: 35 },
+    ];
+    const miercoles = [
+      { comida: 'Pre-entreno', plato: 'Avena con leche y manzana', ingredientes: 'Avena 60g, leche 200ml, manzana 150g', kcal: 560, prot: 17, grasas: 9, carbos: 68 },
+      { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 40g, nueces 25g, agua', kcal: 370, prot: 36, grasas: 18, carbos: 6 },
+      { comida: 'Comida', plato: 'Pollo con quinoa y verduras', ingredientes: 'Pollo 180g, quinoa 120g seca, verduras 120g, AOVE 10g', kcal: 870, prot: 55, grasas: 25, carbos: 60 },
+      { comida: 'Merienda', plato: 'Whey 25g con yogur natural', ingredientes: 'Whey 25g, yogur 150g', kcal: 300, prot: 33, grasas: 4, carbos: 9 },
+      { comida: 'Cena', plato: 'Salmón con patata y brócoli', ingredientes: 'Salmón 180g, patata 180g, brócoli 180g, AOVE 10g', kcal: 560, prot: 48, grasas: 36, carbos: 30 },
+    ];
+    const jueves = [
+      { comida: 'Pre-entreno', plato: 'Tostadas integrales con aguacate y huevo', ingredientes: 'Pan integral 2 rebanadas, aguacate 50g, huevo 2 uds', kcal: 520, prot: 20, grasas: 18, carbos: 50 },
       { comida: 'Post-entreno', plato: 'Batido whey y almendras', ingredientes: 'Whey 40g, almendras 25g, agua', kcal: 390, prot: 38, grasas: 17, carbos: 7 },
       { comida: 'Comida', plato: 'Ternera con arroz integral y verduras', ingredientes: 'Ternera 170g, arroz integral 130g seco, verduras 120g, AOVE 10g', kcal: 890, prot: 55, grasas: 28, carbos: 60 },
       { comida: 'Merienda', plato: 'Queso fresco batido con nueces', ingredientes: 'Queso fresco batido 150g, nueces 20g', kcal: 280, prot: 30, grasas: 8, carbos: 8 },
       { comida: 'Cena', plato: 'Merluza con patata y espinacas', ingredientes: 'Merluza 180g, patata 180g, espinacas 150g, AOVE 10g', kcal: 570, prot: 45, grasas: 28, carbos: 35 },
     ];
-
-    const miercoles = [
+    const viernes = [
       { comida: 'Pre-entreno', plato: 'Avena con leche y plátano', ingredientes: 'Avena 60g, leche 200ml, plátano 100g', kcal: 570, prot: 18, grasas: 10, carbos: 65 },
       { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 40g, nueces 25g, agua', kcal: 370, prot: 36, grasas: 18, carbos: 6 },
       { comida: 'Comida', plato: 'Pollo con arroz y verduras', ingredientes: 'Pollo 180g, arroz 130g seco, verduras 120g, AOVE 10g', kcal: 880, prot: 55, grasas: 25, carbos: 65 },
@@ -51,16 +193,12 @@
       { comida: 'Cena', plato: 'Salmón con patata y calabacín', ingredientes: 'Salmón 180g, patata 180g, calabacín 180g, AOVE 10g', kcal: 560, prot: 48, grasas: 36, carbos: 30 },
     ];
 
-    const jueves = martes; // mismo que martes para simplicidad
-    const viernes = viernes = miercoles; // mismo que miércoles para simplicidad
-
     // Base sábado y domingo con menos kcal y carbos (menos actividad)
     const sabadoBase = [
       { comida: 'Desayuno', plato: 'Tortilla con pan integral y aguacate', ingredientes: 'Huevos 3, pan integral 2 rebanadas, aguacate 50g', kcal: 500, prot: 25, grasas: 30, carbos: 40 },
       { comida: 'Comida', plato: 'Pavo con batata y brócoli', ingredientes: 'Pavo 180g, batata 180g, brócoli 200g, AOVE 10g', kcal: 700, prot: 55, grasas: 20, carbos: 50 },
       { comida: 'Cena', plato: 'Pizza casera integral con verduras', ingredientes: 'Base integral, tomate, mozzarella 100g, verduras', kcal: 620, prot: 30, grasas: 25, carbos: 70 },
     ];
-
     const domingoBase = [
       { comida: 'Desayuno', plato: 'Yogur con frutas y frutos secos', ingredientes: 'Yogur natural 200g, frutas 150g, nueces 20g', kcal: 480, prot: 25, grasas: 15, carbos: 50 },
       { comida: 'Comida', plato: 'Salmón con quinoa y espárragos', ingredientes: 'Salmón 180g, quinoa 130g cocida, espárragos 150g, AOVE 10g', kcal: 700, prot: 50, grasas: 22, carbos: 45 },
@@ -72,10 +210,10 @@
 
     // Función para preguntar dónde quieres añadir el batido extra sábado/domingo
     function preguntaBatido() {
-      let ubicacion = prompt('¿Quieres añadir un batido de whey extra en sábado y domingo? Escribe "mañana" o "tarde" (o deja vacío para no añadir).');
+      let ubicacion = prompt('¿Quieres añadir un batido de whey extra en sábado y domingo? Escribe "media mañana" o "merienda" (o deja vacío para no añadir).');
       if (ubicacion) {
         ubicacion = ubicacion.toLowerCase();
-        if (ubicacion !== 'mañana' && ubicacion !== 'tarde') {
+        if (ubicacion !== 'media mañana' && ubicacion !== 'merienda') {
           ubicacion = null;
         }
       } else {
@@ -101,7 +239,7 @@
           }
         } else {
           ubicacionBatido = localStorage.getItem('batidoUbicacion');
-          incluirBatido = ubicacionBatido === 'mañana' || ubicacionBatido === 'tarde';
+          incluirBatido = ubicacionBatido === 'media mañana' || ubicacionBatido === 'merienda';
         }
       }
 
@@ -117,10 +255,10 @@
       }
 
       if (incluirBatido && (dia === 'sabado' || dia === 'domingo')) {
-        if (ubicacionBatido === 'mañana') {
+        if (ubicacionBatido === 'media mañana') {
           // Añadir batido después del desayuno (posición 1)
           menuDia.splice(1, 0, batidoExtra);
-        } else if (ubicacionBatido === 'tarde') {
+        } else if (ubicacionBatido === 'merienda') {
           // Añadir batido antes de la cena
           let posCena = menuDia.findIndex(m => m.comida.toLowerCase().includes('cena'));
           if (posCena === -1) posCena = menuDia.length;
@@ -155,7 +293,7 @@
         </div>`;
       } else if (dia === 'sabado' || dia === 'domingo') {
         html += `<div class="supplement" style="color:#ff7043;">
-          <p>Para añadir un batido de whey extra, recarga la página y elige "mañana" o "tarde" cuando se pregunte.</p>
+          <p>Para añadir un batido de whey extra, recarga la página y elige "media mañana" o "merienda" cuando se pregunte.</p>
         </div>`;
       }
 
