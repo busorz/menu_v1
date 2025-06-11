@@ -146,16 +146,6 @@
       setMode(currentMode === 'light' ? 'dark' : 'light');
     });
 
-    // Al cargar la página, carga modo guardado o usa oscuro por defecto
-    window.onload = () => {
-      const modoGuardado = localStorage.getItem('menuModo') || 'dark';
-      setMode(modoGuardado);
-
-      const diaGuardado = localStorage.getItem('menuDiaSeleccionado') || 'lunes';
-      document.getElementById('day').value = diaGuardado;
-      renderMenu(diaGuardado);
-    };
-
     // Datos comidas por día
     const lunes = [
       { comida: 'Pre-entreno', plato: 'Avena con leche y plátano', ingredientes: 'Avena 60g, leche 200ml, plátano 100g', kcal: 570, prot: 18, grasas: 10, carbos: 65 },
@@ -174,52 +164,56 @@
     const miercoles = [
       { comida: 'Pre-entreno', plato: 'Avena con leche y manzana', ingredientes: 'Avena 60g, leche 200ml, manzana 150g', kcal: 560, prot: 17, grasas: 9, carbos: 68 },
       { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 40g, nueces 25g, agua', kcal: 370, prot: 36, grasas: 18, carbos: 6 },
-      { comida: 'Comida', plato: 'Pollo con quinoa y verduras', ingredientes: 'Pollo 180g, quinoa 120g seca, verduras 120g, AOVE 10g', kcal: 870, prot: 55, grasas: 25, carbos: 60 },
+      { comida: 'Comida', plato: 'Pollo con lentejas y verduras', ingredientes: 'Pollo 180g, lentejas 130g cocidas, verduras 120g, AOVE 10g', kcal: 880, prot: 55, grasas: 25, carbos: 60 },
       { comida: 'Merienda', plato: 'Whey 25g con yogur natural', ingredientes: 'Whey 25g, yogur 150g', kcal: 300, prot: 33, grasas: 4, carbos: 9 },
-      { comida: 'Cena', plato: 'Salmón con patata y brócoli', ingredientes: 'Salmón 180g, patata 180g, brócoli 180g, AOVE 10g', kcal: 560, prot: 48, grasas: 36, carbos: 30 },
+      { comida: 'Cena', plato: 'Atún con patata y brócoli', ingredientes: 'Atún 180g, patata 180g, brócoli 180g, AOVE 10g', kcal: 560, prot: 48, grasas: 36, carbos: 30 },
     ];
     const jueves = [
-      { comida: 'Pre-entreno', plato: 'Tostadas integrales con aguacate y huevo', ingredientes: 'Pan integral 2 rebanadas, aguacate 50g, huevo 2 uds', kcal: 520, prot: 20, grasas: 18, carbos: 50 },
+      { comida: 'Pre-entreno', plato: 'Tostadas integrales con mermelada y pera', ingredientes: 'Pan integral 2 rebanadas, mermelada 20g, pera 150g', kcal: 520, prot: 13, grasas: 5, carbos: 85 },
       { comida: 'Post-entreno', plato: 'Batido whey y almendras', ingredientes: 'Whey 40g, almendras 25g, agua', kcal: 390, prot: 38, grasas: 17, carbos: 7 },
       { comida: 'Comida', plato: 'Ternera con arroz integral y verduras', ingredientes: 'Ternera 170g, arroz integral 130g seco, verduras 120g, AOVE 10g', kcal: 890, prot: 55, grasas: 28, carbos: 60 },
       { comida: 'Merienda', plato: 'Queso fresco batido con nueces', ingredientes: 'Queso fresco batido 150g, nueces 20g', kcal: 280, prot: 30, grasas: 8, carbos: 8 },
-      { comida: 'Cena', plato: 'Merluza con patata y espinacas', ingredientes: 'Merluza 180g, patata 180g, espinacas 150g, AOVE 10g', kcal: 570, prot: 45, grasas: 28, carbos: 35 },
+      { comida: 'Cena', plato: 'Merluza con patata y espinacas', ingredientes: 'Merluza 180g, patata 150g, espinacas 150g, AOVE 10g', kcal: 570, prot: 45, grasas: 28, carbos: 35 },
     ];
     const viernes = [
       { comida: 'Pre-entreno', plato: 'Avena con leche y plátano', ingredientes: 'Avena 60g, leche 200ml, plátano 100g', kcal: 570, prot: 18, grasas: 10, carbos: 65 },
       { comida: 'Post-entreno', plato: 'Batido whey y nueces', ingredientes: 'Whey 40g, nueces 25g, agua', kcal: 370, prot: 36, grasas: 18, carbos: 6 },
-      { comida: 'Comida', plato: 'Pollo con arroz y verduras', ingredientes: 'Pollo 180g, arroz 130g seco, verduras 120g, AOVE 10g', kcal: 880, prot: 55, grasas: 25, carbos: 65 },
+      { comida: 'Comida', plato: 'Pollo con pasta integral y verduras', ingredientes: 'Pollo 180g, pasta integral 130g seca, verduras 120g, AOVE 10g', kcal: 880, prot: 55, grasas: 25, carbos: 65 },
       { comida: 'Merienda', plato: 'Whey 25g con yogur natural', ingredientes: 'Whey 25g, yogur 150g', kcal: 300, prot: 33, grasas: 4, carbos: 9 },
       { comida: 'Cena', plato: 'Salmón con patata y calabacín', ingredientes: 'Salmón 180g, patata 180g, calabacín 180g, AOVE 10g', kcal: 560, prot: 48, grasas: 36, carbos: 30 },
     ];
 
-    // Base sábado y domingo con menos kcal y carbos (menos actividad)
+    // Fines de semana con menos kcal y un batido extra opcional
     const sabadoBase = [
-      { comida: 'Desayuno', plato: 'Tortilla con pan integral y aguacate', ingredientes: 'Huevos 3, pan integral 2 rebanadas, aguacate 50g', kcal: 500, prot: 25, grasas: 30, carbos: 40 },
-      { comida: 'Comida', plato: 'Pavo con batata y brócoli', ingredientes: 'Pavo 180g, batata 180g, brócoli 200g, AOVE 10g', kcal: 700, prot: 55, grasas: 20, carbos: 50 },
-      { comida: 'Cena', plato: 'Pizza casera integral con verduras', ingredientes: 'Base integral, tomate, mozzarella 100g, verduras', kcal: 620, prot: 30, grasas: 25, carbos: 70 },
+      { comida: 'Desayuno', plato: 'Tortilla con pan integral y tomate', ingredientes: 'Huevos 3, pan integral 2 rebanadas, tomate 100g, AOVE 10g', kcal: 600, prot: 38, grasas: 30, carbos: 50 },
+      { comida: 'Comida', plato: 'Pavo con arroz y verduras', ingredientes: 'Pavo 180g, arroz 130g seco, verduras 120g, AOVE 10g', kcal: 750, prot: 50, grasas: 20, carbos: 55 },
+      { comida: 'Merienda', plato: 'Yogur natural con fruta y nueces', ingredientes: 'Yogur 150g, fruta 100g, nueces 15g', kcal: 300, prot: 15, grasas: 10, carbos: 30 },
+      { comida: 'Cena', plato: 'Sepia con patata y brócoli', ingredientes: 'Sepia 180g, patata 180g, brócoli 180g, AOVE 10g', kcal: 500, prot: 45, grasas: 20, carbos: 25 },
     ];
     const domingoBase = [
-      { comida: 'Desayuno', plato: 'Yogur con frutas y frutos secos', ingredientes: 'Yogur natural 200g, frutas 150g, nueces 20g', kcal: 480, prot: 25, grasas: 15, carbos: 50 },
-      { comida: 'Comida', plato: 'Salmón con quinoa y espárragos', ingredientes: 'Salmón 180g, quinoa 130g cocida, espárragos 150g, AOVE 10g', kcal: 700, prot: 50, grasas: 22, carbos: 45 },
-      { comida: 'Cena', plato: 'Ensalada con pollo y aguacate', ingredientes: 'Pollo 150g, aguacate 50g, lechuga, tomate, AOVE 10g', kcal: 600, prot: 35, grasas: 30, carbos: 20 },
+      { comida: 'Desayuno', plato: 'Tostadas integrales con aguacate y huevo', ingredientes: 'Pan integral 2 rebanadas, aguacate 50g, huevo 2', kcal: 620, prot: 30, grasas: 32, carbos: 45 },
+      { comida: 'Comida', plato: 'Merluza con lentejas y verduras', ingredientes: 'Merluza 180g, lentejas 130g cocidas, verduras 120g, AOVE 10g', kcal: 750, prot: 50, grasas: 20, carbos: 55 },
+      { comida: 'Merienda', plato: 'Batido whey y fruta', ingredientes: 'Whey 25g, fruta 100g, agua', kcal: 250, prot: 25, grasas: 2, carbos: 15 },
+      { comida: 'Cena', plato: 'Pollo con arroz y ensalada', ingredientes: 'Pollo 180g, arroz 130g cocido, ensalada 150g, AOVE 10g', kcal: 500, prot: 45, grasas: 20, carbos: 25 },
     ];
 
-    // Batido extra de whey 25g con agua
-    const batidoExtra = { comida: 'Batido extra', plato: 'Whey 25g con agua', ingredientes: 'Whey 25g, agua', kcal: 100, prot: 20, grasas: 1, carbos: 2 };
+    const batidoExtra = {
+      comida: 'Batido extra',
+      plato: 'Batido de proteínas whey con agua y frutos secos',
+      ingredientes: 'Whey 30g, agua 200ml, almendras 15g',
+      kcal: 260,
+      prot: 30,
+      grasas: 10,
+      carbos: 5,
+    };
 
-    // Función para preguntar dónde quieres añadir el batido extra sábado/domingo
+    // Pregunta dónde quiere el batido extra (sólo fin de semana)
     function preguntaBatido() {
-      let ubicacion = prompt('¿Quieres añadir un batido de whey extra en sábado y domingo? Escribe "mañana" o "tarde" (o deja vacío para no añadir).');
-      if (ubicacion) {
-        ubicacion = ubicacion.toLowerCase();
-        if (ubicacion !== 'mañana' && ubicacion !== 'tarde') {
-          ubicacion = null;
-        }
-      } else {
-        ubicacion = null;
-      }
-      return ubicacion;
+      let resp = prompt("¿Quieres incluir un batido extra el sábado/domingo? Contesta 'mañana', 'tarde' o 'no' (sin comillas).", "mañana");
+      if (!resp) return null;
+      resp = resp.trim().toLowerCase();
+      if (resp === 'mañana' || resp === 'tarde') return resp;
+      return null;
     }
 
     function renderMenu(dia) {
@@ -239,75 +233,90 @@
           }
         } else {
           ubicacionBatido = localStorage.getItem('batidoUbicacion');
-          incluirBatido = ubicacionBatido === 'Mañana' || ubicacionBatido === 'Tarde';
+          incluirBatido = (ubicacionBatido === 'mañana' || ubicacionBatido === 'tarde');
         }
+      } else {
+        incluirBatido = false;
+        localStorage.removeItem('batidoUbicacion');
       }
 
-      switch(dia) {
+      switch (dia) {
         case 'lunes': menuDia = lunes; break;
         case 'martes': menuDia = martes; break;
         case 'miercoles': menuDia = miercoles; break;
         case 'jueves': menuDia = jueves; break;
         case 'viernes': menuDia = viernes; break;
-        case 'sabado': menuDia = [...sabadoBase]; break;
-        case 'domingo': menuDia = [...domingoBase]; break;
+        case 'sabado': menuDia = sabadoBase; break;
+        case 'domingo': menuDia = domingoBase; break;
         default: menuDia = lunes;
       }
 
-      if (incluirBatido && (dia === 'sabado' || dia === 'domingo')) {
-        if (ubicacionBatido === 'Mañana') {
-          // Añadir batido después del desayuno (posición 1)
-          menuDia.splice(1, 0, batidoExtra);
-        } else if (ubicacionBatido === 'Tarde') {
-          // Añadir batido antes de la cena
-          let posCena = menuDia.findIndex(m => m.comida.toLowerCase().includes('cena'));
-          if (posCena === -1) posCena = menuDia.length;
-          menuDia.splice(posCena, 0, batidoExtra);
+      // Copia para no modificar original
+      let menuMostrar = [...menuDia];
+
+      if (incluirBatido) {
+        if (ubicacionBatido === 'mañana') {
+          menuMostrar = [batidoExtra, ...menuMostrar];
+        } else if (ubicacionBatido === 'tarde') {
+          // Insertar antes de la cena (si existe)
+          const indexCena = menuMostrar.findIndex(m => m.comida.toLowerCase() === 'cena');
+          if (indexCena !== -1) {
+            menuMostrar.splice(indexCena, 0, batidoExtra);
+          } else {
+            menuMostrar.push(batidoExtra);
+          }
         }
       }
 
-      let totalKcal = 0, totalProt = 0, totalGrasas = 0, totalCarbos = 0;
-
-      let html = `<h2>${dia.charAt(0).toUpperCase() + dia.slice(1)}</h2>`;
-      menuDia.forEach(m => {
-        totalKcal += m.kcal;
-        totalProt += m.prot;
-        totalGrasas += m.grasas;
-        totalCarbos += m.carbos;
-
-        html += `<div class="meal">
-          <h3>${m.comida}: ${m.plato}</h3>
-          <p><strong>Ingredientes:</strong> ${m.ingredientes}</p>
-          <p>Kcal: ${m.kcal} | Proteínas: ${m.prot}g | Grasas: ${m.grasas}g | Carbohidratos: ${m.carbos}g</p>
-        </div>`;
+      // Construir HTML
+      let html = '';
+      let totales = { kcal: 0, prot: 0, grasas: 0, carbos: 0 };
+      menuMostrar.forEach(m => {
+        html += `
+          <div class="meal">
+            <h3>${m.comida}: ${m.plato}</h3>
+            <p><strong>Ingredientes:</strong> ${m.ingredientes}</p>
+            <p><strong>Kcal:</strong> ${m.kcal} | <strong>Proteínas:</strong> ${m.prot}g | <strong>Grasas:</strong> ${m.grasas}g | <strong>Carbohidratos:</strong> ${m.carbos}g</p>
+          </div>
+        `;
+        totales.kcal += m.kcal;
+        totales.prot += m.prot;
+        totales.grasas += m.grasas;
+        totales.carbos += m.carbos;
       });
 
-      html += `<div class="summary">
-        <p><strong>Totales del día:</strong> ${totalKcal} kcal, ${totalProt}g proteínas, ${totalGrasas}g grasas, ${totalCarbos}g carbohidratos</p>
-      </div>`;
-
-      if (incluirBatido) {
-        html += `<div class="supplement">
-          <p>Batido extra añadido en <strong>${ubicacionBatido}</strong>.</p>
-          <p>(Whey 25g con agua, ~100 kcal, 20g proteínas)</p>
-        </div>`;
-      } else if (dia === 'sabado' || dia === 'domingo') {
-        html += `<div class="supplement" style="color:#ff7043;">
-          <p>Para añadir un batido de whey extra, recarga la página y elige "Mañana" o "Tarde" cuando se pregunte.</p>
-        </div>`;
-      }
+      html += `
+        <div class="totals">
+          <h3>Totales del día:</h3>
+          <p>Kcal: ${totales.kcal} | Proteínas: ${totales.prot}g | Grasas: ${totales.grasas}g | Carbohidratos: ${totales.carbos}g</p>
+        </div>
+      `;
 
       document.getElementById('menuContainer').innerHTML = html;
+
+      // Actualiza el título del día
+      document.getElementById('tituloDia').textContent = `Menú para el ${dia.charAt(0).toUpperCase() + dia.slice(1)}`;
     }
 
-    document.getElementById('diaSelect').addEventListener('change', e => {
-      renderMenu(e.target.value);
-    });
+    // Función para crear los botones de selección de día
+    function crearBotonesDias() {
+      const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+      const contenedor = document.getElementById('botonesDias');
+      dias.forEach(dia => {
+        const btn = document.createElement('button');
+        btn.textContent = dia.charAt(0).toUpperCase() + dia.slice(1);
+        btn.onclick = () => renderMenu(dia);
+        contenedor.appendChild(btn);
+      });
+    }
 
-    // Cargar menú del día actual si hay o lunes por defecto
-    const diaGuardado = localStorage.getItem('menuDiaSeleccionado') || 'lunes';
-    document.getElementById('diaSelect').value = diaGuardado;
-    renderMenu(diaGuardado);
+    // Inicializar
+    window.onload = () => {
+      crearBotonesDias();
+      // Mostrar menú del día guardado o lunes por defecto
+      const diaGuardado = localStorage.getItem('menuDiaSeleccionado') || 'lunes';
+      renderMenu(diaGuardado);
+    };
   </script>
 </body>
 </html>
