@@ -118,62 +118,42 @@
     const domingo = [
       { comida: 'Desayuno', plato: 'Huevos revueltos con espinacas y pan integral', ingredientes: 'Huevos 3 uds, espinacas 50g, pan integral 60g', kcal: 400, prot: 30, grasas: 25, carbos: 30 },
       { comida: 'Comida', plato: 'Pollo con patata y verduras al horno', ingredientes: 'Pollo 150g, patata 150g, verduras 100g, AOVE 5g', kcal: 650, prot: 45, grasas: 18, carbos: 50 },
-      { comida: 'Merienda', plato: 'Yogur natural con frutos secos', ingredientes: 'Yogur 125g, nueces 20g', kcal: 250, prot: 15, grasas: 15, carbos: 10 },
-      { comida: 'Cena', plato: 'Salmón con ensalada variada', ingredientes: 'Salmón 150g, ensalada 150g, AOVE 5g', kcal: 600, prot: 40, grasas: 30, carbos: 20 },
+      { comida: 'Merienda', plato: 'Yogur natural con frutos secos', ingredientes: 'Yogur 125g, nueces 20g', kcal: 240, prot: 15, grasas: 14, carbos: 10 },
+      { comida: 'Cena', plato: 'Salmón con calabacín y arroz', ingredientes: 'Salmón 150g, calabacín 150g, arroz 80g seco, AOVE 5g', kcal: 610, prot: 40, grasas: 30, carbos: 30 },
     ];
 
-    const menuData = {
-      lunes, martes, miercoles, jueves, viernes, sabado, domingo
-    };
+    const menuData = { lunes, martes, miercoles, jueves, viernes, sabado, domingo };
 
     function renderMenu() {
-      const day = document.getElementById('day').value;
+      const select = document.getElementById('day');
+      const day = select.value;
       const menu = menuData[day];
       const container = document.getElementById('menu');
       container.innerHTML = '';
 
-      let totalKcal = 0, totalProt = 0, totalGrasas = 0, totalCarbos = 0;
-
-      menu.forEach(item => {
-        totalKcal += item.kcal;
-        totalProt += item.prot;
-        totalGrasas += item.grasas;
-        totalCarbos += item.carbos;
-
-        const mealDiv = document.createElement('div');
-        mealDiv.className = 'meal';
-        mealDiv.innerHTML = `<h3>${item.comida}</h3>
+      menu.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'meal';
+        div.innerHTML = `<h3>${item.comida}</h3>
           <p><strong>Plato:</strong> ${item.plato}</p>
           <p><strong>Ingredientes:</strong> ${item.ingredientes}</p>
-          <p><strong>Valores nutricionales:</strong> ${item.kcal} kcal, ${item.prot} g proteínas, ${item.grasas} g grasas, ${item.carbos} g carbohidratos</p>`;
-        container.appendChild(mealDiv);
+          <p><strong>Calorías:</strong> ${item.kcal} kcal | <strong>Proteínas:</strong> ${item.prot} g | <strong>Grasas:</strong> ${item.grasas} g | <strong>Carbohidratos:</strong> ${item.carbos} g</p>`;
+        container.appendChild(div);
       });
 
-      // Mostrar resumen
-      const summary = document.createElement('div');
-      summary.className = 'summary';
-      summary.innerHTML = `<p><strong>Total kcal:</strong> ${totalKcal} kcal</p>
-        <p><strong>Total proteínas:</strong> ${totalProt.toFixed(1)} g</p>
-        <p><strong>Total grasas:</strong> ${totalGrasas.toFixed(1)} g</p>
-        <p><strong>Total carbohidratos:</strong> ${totalCarbos.toFixed(1)} g</p>`;
-      container.appendChild(summary);
+      // Mostrar resumen nutricional
+      const totalKcal = menu.reduce((acc, i) => acc + i.kcal, 0);
+      const totalProt = menu.reduce((acc, i) => acc + i.prot, 0);
+      const totalGrasas = menu.reduce((acc, i) => acc + i.grasas, 0);
+      const totalCarbos = menu.reduce((acc, i) => acc + i.carbos, 0);
 
-      // Mostrar suplementación recomendada
-      let suplementoText = '';
-      if(['lunes', 'martes', 'jueves', 'viernes'].includes(day)) {
-        suplementoText = 'Suplementación: Aminoácidos intra-entreno, creatina post-entreno.';
-      } else if(day === 'miercoles') {
-        suplementoText = 'Suplementación: Creatina post-entreno.';
-      } else {
-        suplementoText = 'Sin suplementación específica.';
-      }
-      const suplementoDiv = document.createElement('div');
-      suplementoDiv.className = 'supplement';
-      suplementoDiv.textContent = suplementoText;
-      container.appendChild(suplementoDiv);
+      const resumen = document.createElement('div');
+      resumen.className = 'summary';
+      resumen.innerHTML = `Total día: ${totalKcal} kcal | Proteínas: ${totalProt.toFixed(1)} g | Grasas: ${totalGrasas.toFixed(1)} g | Carbohidratos: ${totalCarbos.toFixed(1)} g`;
+      container.appendChild(resumen);
     }
 
-    // Mostrar menú inicial (lunes)
+    // Cargar menú inicial
     renderMenu();
   </script>
 </body>
